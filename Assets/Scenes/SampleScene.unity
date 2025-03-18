@@ -7805,7 +7805,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 74750663ff5aa824a8a8916be34aebc9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerMoney: 150
+  playerMoney: 1000
   moneyText: {fileID: 1580950148}
 --- !u!114 &535464248
 MonoBehaviour:

@@ -6,7 +6,7 @@ using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
-    public GameObject enemyPrefab; // Prefab của kẻ địch
+    public GameObject enemyPrefab; 
     public Transform[] spawnPoints; // Mảng các điểm xuất hiện
     public Transform player; // Tham chiếu đến người chơi
     public MoneySystem moneySystem; // Tham chiếu đến hệ thống tiền tệ
