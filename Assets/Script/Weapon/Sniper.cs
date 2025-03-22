@@ -44,7 +44,7 @@ public class Sniper : Gun
             if (Input.GetMouseButtonDown(1))
             {
                 isAimingActive = !isAimingActive;
-                Debug.Log("Sniper HandleZoom: isAimingActive = " + isAimingActive); // Debugging
+                Debug.Log("Sniper HandleZoom: isAimingActive = " + isAimingActive); 
                 if (isAimingActive)
                 {
                     isAiming = true;
@@ -98,7 +98,7 @@ public class Sniper : Gun
         }
         if (spoer != null) spoer.SetActive(true);
         if (SniperAim != null) SniperAim.gameObject.SetActive(false);
-        Debug.Log("Sniper ResetAim: isAimingActive = " + isAimingActive); // Debugging
+        Debug.Log("Sniper ResetAim: isAimingActive = " + isAimingActive); 
     }
 
     public override void ApplyRecoil()

@@ -12,11 +12,11 @@ public class GunData : ScriptableObject
     public float fireRate;
 
     [Header("Ammo Config")]
-    public float magazineSize = 30f; // Kích thước băng đạn
-    public float totalAmmo = 90f; // Tổng số đạn dự trữ
+    public float magazineSize = 30f; 
+    public float totalAmmo = 90f; 
 
     [Header("Reload Config")]
-    public float reloadTime = 2f; // Thời gian nạp đạn
+    public float reloadTime = 2f; 
 
     [Header("Aim")]
     public Vector3 normalLocalPosition;
@@ -29,16 +29,16 @@ public class GunData : ScriptableObject
     public float aimSmooting = 10f;
 
     [Header("Recoil")]
-    public float recoilForceUpward = 2f; // Lực giật lên trên
-    public float recoilForceBackward = 0.5f; // Lực giật về sau
-    public float recoilRecoverySpeed = 10f; // Tốc độ phục hồi recoil
+    public float recoilForceUpward = 2f; 
+    public float recoilForceBackward = 0.5f;
+    public float recoilRecoverySpeed = 10f; 
 
     [Header("Accuracy")]
     [Range(0f, 1f)]
-    public float hipFireSpread = 0.1f; // Độ lan rộng khi bắn thường (hip-fire)
+    public float hipFireSpread = 0.1f;
     [Range(0f, 1f)]
-    public float aimSpread = 0.01f; // Độ lan rộng khi ngắm bắn (ADS)
+    public float aimSpread = 0.01f; 
 
     [Header("Damage")]
-    public float damage = 10f; // Thêm biến sát thương
+    public float damage = 10f; 
 }

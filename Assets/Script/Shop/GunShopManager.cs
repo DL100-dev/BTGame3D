@@ -9,14 +9,14 @@ public class GunShopManager : MonoBehaviour
     public Button pistolButton;
     public Button rifleButton;
     public Button sniperButton;
-    public Button reloadButton; // Thêm tham chiếu đến nút hồi đạn
+    public Button reloadButton; 
     public TextMeshProUGUI ammoText;
 
     [Header("Gun Prices")]
     public int pistolPrice = 100;
     public int riflePrice = 300;
     public int sniperPrice = 500;
-    public int reloadPrice = 50; // Giá hồi đạn
+    public int reloadPrice = 50; 
 
     [Header("Gun GameObjects")]
     public GameObject pistolGameObject;
@@ -26,7 +26,6 @@ public class GunShopManager : MonoBehaviour
     private GameObject currentActiveGun;
     private bool isShopOpen = false;
 
-    // Thêm tham chiếu đến MoneySystem
     public MoneySystem moneySystem;
 
     void Start()
@@ -40,7 +39,7 @@ public class GunShopManager : MonoBehaviour
         pistolButton.onClick.AddListener(HandlePistolPurchase);
         rifleButton.onClick.AddListener(HandleRiflePurchase);
         sniperButton.onClick.AddListener(HandleSniperPurchase);
-        reloadButton.onClick.AddListener(HandleReloadAmmo); // Thêm sự kiện click cho nút hồi đạn
+        reloadButton.onClick.AddListener(HandleReloadAmmo); 
 
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
@@ -50,7 +49,6 @@ public class GunShopManager : MonoBehaviour
             ammoText.gameObject.SetActive(false);
         }
 
-        // Cập nhật hiển thị tiền ban đầu
         moneySystem.UpdateMoneyUI();
         UpdateShopButtons();
     }
@@ -64,7 +62,7 @@ public class GunShopManager : MonoBehaviour
 
         if (isShopOpen) return;
 
-        if (Input.GetMouseButtonDown(0)) // 0 là chuột trái
+        if (Input.GetMouseButtonDown(0)) 
         {
             FireWeapon();
         }
@@ -136,7 +134,6 @@ public class GunShopManager : MonoBehaviour
         }
     }
 
-    // Thêm logic hồi đạn
     void HandleReloadAmmo()
     {
         if (currentActiveGun != null && moneySystem.playerMoney >= reloadPrice)
@@ -144,15 +141,12 @@ public class GunShopManager : MonoBehaviour
             Gun gunScript = currentActiveGun.GetComponent<Gun>();
             if (gunScript != null)
             {
-                // Hồi đầy đạn cho súng hiện tại
                 gunScript.currentAmmo = gunScript.gunData.magazineSize;
                 gunScript.totalAmmo = gunScript.gunData.totalAmmo;
                 gunScript.UpdateAmmoUI();
-                // Trừ tiền khi hồi đạn
                 moneySystem.playerMoney -= reloadPrice;
                 moneySystem.UpdateMoneyUI();
                 Debug.Log("Ammo reloaded!");
-                // Gọi UpdateShopButtons() sau khi trừ tiền
                 UpdateShopButtons();
             }
         }
@@ -221,7 +215,6 @@ public class GunShopManager : MonoBehaviour
             sniperButton.interactable = moneySystem.playerMoney >= sniperPrice;
         }
 
-        // Kiểm tra xem nút hồi đạn có thể sử dụng được không
         if (reloadButton != null)
         {
             reloadButton.interactable = currentActiveGun != null && moneySystem.playerMoney >= reloadPrice;

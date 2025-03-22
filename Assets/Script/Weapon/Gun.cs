@@ -13,7 +13,7 @@ public abstract class Gun : MonoBehaviour
     [HideInInspector] public Transform cameraTransform;
 
     [HideInInspector] public float currentAmmo = 0f;
-    [HideInInspector] public float totalAmmo = 0f; // Thêm biến tổng số đạn
+    [HideInInspector] public float totalAmmo = 0f; 
     private float nextTimeToFire = 0f;
 
     [HideInInspector] public bool isReloading = false;
@@ -21,17 +21,16 @@ public abstract class Gun : MonoBehaviour
     private int reloadHash;
 
 
-    // Recoil variables
     private Vector3 currentRecoilRotation;
     protected Vector3 targetRecoilRotation;
 
-    public ParticleSystem muzzleFlash; // Thêm biến này
+    public ParticleSystem muzzleFlash; 
 
     public Image cross;
-    public TextMeshProUGUI ammoText; // Tham chiếu đến Text hiển thị số lượng đạn
+    public TextMeshProUGUI ammoText; 
 
     protected bool isAiming = false;
-    public GameObject bulletHolePrefab; // Prefab vết bắn
+    public GameObject bulletHolePrefab; 
 
     AudioManager audioManager;
     private void Awake()
@@ -40,26 +39,23 @@ public abstract class Gun : MonoBehaviour
     }
     public virtual void Start()
     {
-        currentAmmo = gunData.magazineSize; // Khởi tạo số đạn trong băng
-        totalAmmo = gunData.totalAmmo;     // Khởi tạo tổng số đạn dự trữ
+        currentAmmo = gunData.magazineSize; 
+        totalAmmo = gunData.totalAmmo;     
         playerController = transform.root.GetComponent<PlayerController>();
         cameraTransform = playerController.mainCamera.transform;
         reloadHash = Animator.StringToHash("isReloading");
-        // Ensure crosshair is initially active
         if (cross != null)
         {
             cross.gameObject.SetActive(true);
         }
-        UpdateAmmoUI(); // Cập nhật UI hiển thị đạn khi bắt đầu
+        UpdateAmmoUI(); 
     }
     public virtual void Update()
     {
-        // Recoil recovery
         targetRecoilRotation = Vector3.Lerp(targetRecoilRotation, Vector3.zero, Time.deltaTime * gunData.recoilRecoverySpeed);
         currentRecoilRotation = Vector3.Slerp(currentRecoilRotation, targetRecoilRotation, Time.deltaTime * gunData.recoilRecoverySpeed);
         cameraTransform.localRotation = Quaternion.Euler(currentRecoilRotation) * cameraTransform.localRotation;
 
-        // Tắt muzzle flash khi không bắn hoặc hết đạn
         if (currentAmmo <= 0f || !IsShootingInput())
         {
             if (muzzleFlash != null && muzzleFlash.isPlaying)
@@ -83,13 +79,12 @@ public abstract class Gun : MonoBehaviour
             }
         }
 
-        // Ngừng ngắm nếu đang thay đạn và hiển thị crosshair
         if (IsReloading() && isAiming)
         {
             isAiming = false;
             if (cross != null)
             {
-                cross.gameObject.SetActive(true); // Hiển thị crosshair khi không ngắm
+                cross.gameObject.SetActive(true); 
             }
         }
     }
@@ -99,7 +94,7 @@ public abstract class Gun : MonoBehaviour
         {
             StartCoroutine(Reload());
         }
-        else if (!isReloading && currentAmmo <= 0 && totalAmmo > 0) // Reload khi hết đạn
+        else if (!isReloading && currentAmmo <= 0 && totalAmmo > 0) 
         {
             StartCoroutine(Reload());
         }
@@ -133,7 +128,7 @@ public abstract class Gun : MonoBehaviour
         if (currentAmmo <= 0f)
         {
             Debug.Log(gunData.gunName + " has no bullets left, Please reload");
-            TryReload(); // Tự động thử reload khi hết đạn
+            TryReload(); 
             return;
         }
         if (Time.time >= nextTimeToFire)
@@ -146,16 +141,14 @@ public abstract class Gun : MonoBehaviour
     {
         currentAmmo--;
         Debug.Log(gunData.gunName + " Shoot, bullets in magazine: " + currentAmmo + ", total bullets: " + totalAmmo);
-        // Apply recoil here before shooting
         ApplyRecoil();
-        // Bật muzzle flash khi bắn
         if (muzzleFlash != null)
         {
             muzzleFlash.Play();
         }
         audioManager.PlaySFX(audioManager.shootSFX);
         Shoot();
-        UpdateAmmoUI(); // Cập nhật UI sau mỗi lần bắn
+        UpdateAmmoUI(); 
     }
 
     public virtual void Shoot()
@@ -168,20 +161,17 @@ public abstract class Gun : MonoBehaviour
 
         Debug.DrawRay(cameraTransform.position, fireDirection * gunData.shootingRange, Color.red, 2f);
 
-        // Thực hiện một raycast duy nhất, kiểm tra cả layer tường và layer mục tiêu
         if (Physics.Raycast(cameraTransform.position, fireDirection, out hit, gunData.shootingRange, gunData.targetLayerMask | gunData.wallLayerMask))
         {
             target = hit.point;
-            // Kiểm tra layer của vật thể bị bắn trúng
             if ((gunData.wallLayerMask.value & (1 << hit.collider.gameObject.layer)) != 0)
             {
                 Debug.Log("Trung tuong");
-                CreateBulletHole(hit); // Tạo vết bắn
+                CreateBulletHole(hit); 
             }
             else if ((gunData.targetLayerMask.value & (1 << hit.collider.gameObject.layer)) != 0)
             {
                 Debug.Log("Trung ke dich");
-                // Handle hitting the target here (e.g., apply damage)
                 OnTargetHit(hit);
             }
         }
@@ -194,11 +184,9 @@ public abstract class Gun : MonoBehaviour
 
     protected virtual void OnTargetHit(RaycastHit hit)
     {
-        // Kiểm tra xem vật thể bị bắn trúng có phải là Enemy không
         Enemy enemy = hit.collider.GetComponent<Enemy>();
         if (enemy != null)
         {
-            // Gọi phương thức TakeDamage() của Enemy và truyền sát thương
             enemy.TakeDamage(hit.point, gunData.damage);
         }
     }
@@ -220,7 +208,7 @@ public abstract class Gun : MonoBehaviour
     {
         if (gunData.bulletTrailPrefab != null)
         {
-            GameObject bulletTrail = Instantiate(gunData.bulletTrailPrefab, gunMuzzle.position, Quaternion.identity);
+            GameObject bulletTrail = Instantiate(gunData.bulletTrailPrefab, gunMuzzle.position, Quaternion.identity); 
             while (bulletTrail != null && Vector3.Distance(bulletTrail.transform.position, target) > 0.1f)
             {
                 bulletTrail.transform.position = Vector3.MoveTowards(bulletTrail.transform.position, target, Time.deltaTime * gunData.bulletSpeed);
@@ -232,24 +220,23 @@ public abstract class Gun : MonoBehaviour
 
     private void DetermineAim()
     {
-        if (!IsReloading()) // Chỉ cho phép ngắm nếu không đang thay đạn
+        if (!IsReloading()) 
         {
             if (Input.GetMouseButtonDown(1))
             {
                 isAiming = !isAiming;
                 if (cross != null)
                 {
-                    cross.gameObject.SetActive(!isAiming); // Ẩn crosshair khi ngắm, hiện khi không ngắm
+                    cross.gameObject.SetActive(!isAiming); 
                 }
             }
         }
         else if (isAiming)
         {
-            // Đảm bảo tắt ngắm khi bắt đầu thay đạn (nếu chưa tắt)
             isAiming = false;
             if (cross != null)
             {
-                cross.gameObject.SetActive(true); // Đảm bảo crosshair hiện khi hết ngắm do reload
+                cross.gameObject.SetActive(true); 
             }
         }
 
@@ -270,17 +257,15 @@ public abstract class Gun : MonoBehaviour
         targetRecoilRotation += new Vector3(-gunData.recoilForceUpward, Random.Range(-5f, 5f), 0f);
         transform.localPosition -= Vector3.forward * gunData.recoilForceBackward;
     }
-    // Hàm ảo để kiểm tra input bắn (sẽ được override trong lớp con)
     protected virtual bool IsShootingInput()
     {
-        return false; // Mặc định là không có input bắn
+        return false; 
     }
     public bool IsReloading()
     {
         return isReloading;
     }
 
-    // Hàm để cập nhật UI hiển thị số lượng đạn
     public void UpdateAmmoUI()
     {
         if (ammoText != null)

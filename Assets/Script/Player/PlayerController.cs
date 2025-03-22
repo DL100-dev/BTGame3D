@@ -28,7 +28,6 @@ public class PlayerController : MonoBehaviour
     private float verticalRotation;
     private float CurrentSpeed => walkSpeed * (playerInputHandler.SprintTriggered ? sprintMultiplier : 1);
 
-    // Start is called before the first frame update
     void Start()
     {
         Cursor.lockState = CursorLockMode.Locked;
@@ -36,7 +35,6 @@ public class PlayerController : MonoBehaviour
     }
 
 
-    // Update is called once per frame
     void Update()
     {
         HandleMovement();
@@ -92,7 +90,7 @@ public class PlayerController : MonoBehaviour
     private void ApplyVerticalRotation(float rotationAmount)
     {
         verticalRotation = Mathf.Clamp(verticalRotation - rotationAmount, -upDownLookRange, upDownLookRange);
-        mainCamera.transform.localRotation = Quaternion.Euler(verticalRotation, 0, 0); // Loại bỏ recoil
+        mainCamera.transform.localRotation = Quaternion.Euler(verticalRotation, 0, 0); 
     }
 
     private void HandleRotation()

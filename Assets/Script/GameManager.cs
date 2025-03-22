@@ -7,22 +7,21 @@ using UnityEngine.SceneManagement;
 public class GameManager : MonoBehaviour
 {
     public GameObject enemyPrefab; 
-    public Transform[] spawnPoints; // Mảng các điểm xuất hiện
-    public Transform player; // Tham chiếu đến người chơi
-    public MoneySystem moneySystem; // Tham chiếu đến hệ thống tiền tệ
-    public TextMeshProUGUI timerText; // Text hiển thị thời gian
-    public TextMeshProUGUI killCountText; // Text hiển thị số lần tiêu diệt kẻ địch
-    public GameObject winPanel; // Panel hiển thị khi thắng
-    public GameObject losePanel; // Panel hiển thị khi thua
-    public float gameDuration = 70f; // Thời gian chơi (1 phút)
+    public Transform[] spawnPoints; 
+    public Transform player; 
+    public MoneySystem moneySystem; 
+    public TextMeshProUGUI timerText; 
+    public TextMeshProUGUI killCountText; 
+    public GameObject winPanel; 
+    public GameObject losePanel; 
+    public float gameDuration = 70f; 
     private float timer;
     private int enemiesKilled = 0;
     private bool gameEnded = false;
     public int enemiesToKill = 5;
     public int playerMaxHealth = 200;
-    private float playerCurrentHealth; // Giả sử điều này được quản lý ở nơi khác, nhưng chúng ta cần nó cho điều kiện thua cuộc.
+    private float playerCurrentHealth;
 
-    // Rất có thể bạn sẽ có một script PlayerHealth để quản lý điều này.
     public HealthSystem playerHealthSystem;
     public Button replayLoserBtn;
     public Button playWinnerBtn;
@@ -38,15 +37,13 @@ public class GameManager : MonoBehaviour
         if (losePanel != null) losePanel.SetActive(false);
         UpdateTimerUI();
         UpdateKillCountUI();
-        playerCurrentHealth = playerMaxHealth; // Khởi tạo máu của người chơi
+        playerCurrentHealth = playerMaxHealth; 
 
-        // Thiết lập trạng thái chuột cho gameplay
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
         Time.timeScale = 1f;
         gameEnded = false;
 
-        // Tạo kẻ địch đầu tiên khi trò chơi bắt đầu
         SpawnNewEnemy();
         replayLoserBtn.onClick.AddListener(RestartGame);
         playWinnerBtn.onClick.AddListener(RestartGame);
@@ -63,7 +60,6 @@ public class GameManager : MonoBehaviour
 
             if (timer <= 0)
             {
-                // Khi hết thời gian, kiểm tra xem đã tiêu diệt đủ kẻ địch chưa
                 if (enemiesKilled >= enemiesToKill)
                 {
                     gameEnded = true;
@@ -72,7 +68,7 @@ public class GameManager : MonoBehaviour
                 else
                 {
                     gameEnded = true;
-                    LoseGame(); // Nếu hết thời gian mà không đủ kill, thì thua
+                    LoseGame(); 
                 }
             }
 
@@ -119,7 +115,6 @@ public class GameManager : MonoBehaviour
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
         Time.timeScale = 0f;
-        // Thực hiện bất kỳ hành động nào khi thắng trò chơi tại đây
     }
 
     void LoseGame()
@@ -132,7 +127,6 @@ public class GameManager : MonoBehaviour
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
         Time.timeScale = 0f;
-        // Thực hiện bất kỳ hành động nào khi thua trò chơi tại đây
     }
 
     public void SpawnNewEnemy()
@@ -141,21 +135,18 @@ public class GameManager : MonoBehaviour
         {
             if (enemyPrefab != null && spawnPoints.Length > 0 && player != null && moneySystem != null)
             {
-                // Chọn một điểm xuất hiện ngẫu nhiên
                 int randomIndex = Random.Range(0, spawnPoints.Length);
                 Transform spawnPoint = spawnPoints[randomIndex];
 
-                // Tạo kẻ địch mới tại điểm xuất hiện
                 GameObject newEnemy = Instantiate(enemyPrefab, spawnPoint.position, spawnPoint.rotation);
 
-                // Lấy tham chiếu đến script Enemy và gán GameManager
                 Enemy enemyScript = newEnemy.GetComponent<Enemy>();
                 if (enemyScript != null)
                 {
                     enemyScript.gameManager = this;
                     enemyScript.player = player;
                     enemyScript.moneySystem = moneySystem;
-                    enemyScript.SetDamageRange(10, 20); // Đặt phạm vi sát thương
+                    enemyScript.SetDamageRange(10, 20); 
                 }
             }
             else
@@ -164,7 +155,6 @@ public class GameManager : MonoBehaviour
             }
         }
     }
-    // Hàm này sẽ được gọi khi nút Replay được nhấn
     public void RestartGame()
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
@@ -173,7 +163,7 @@ public class GameManager : MonoBehaviour
 
     IEnumerator DelayedResume()
     {
-        yield return new WaitForEndOfFrame(); // Hoặc một delay ngắn khác (ví dụ: WaitForSeconds(0.1f))
+        yield return new WaitForEndOfFrame(); 
         ResumeGame();
     }
 

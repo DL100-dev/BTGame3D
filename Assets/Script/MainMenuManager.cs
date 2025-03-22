@@ -6,7 +6,7 @@ public class MainMenuManager : MonoBehaviour
 {
     public Button playBtn;
     public Button exitBtn;
-    public string firstLevelSceneName = "SampleScene"; // Thay thế bằng tên scene gameplay của bạn
+    public string firstLevelSceneName = "SampleScene"; 
     private void Start()
     {
         playBtn.onClick.AddListener(PlayGame);

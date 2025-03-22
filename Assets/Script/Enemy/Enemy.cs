@@ -11,19 +11,19 @@ public class Enemy : MonoBehaviour
     public float detectionRange = 10f;
     public float detectionAngle = 45f;
     public float chaseDistance = 15f;
-    public float patrolWaitTime = 2f; // Thời gian đứng yên khi tuần tra
-    public float patrolRadius = 10f; // Bán kính tuần tra
+    public float patrolWaitTime = 2f; 
+    public float patrolRadius = 10f;
 
     private NavMeshAgent agent;
     private Animator animator;
     private float nextAttackTime = 0f;
     private Vector3 lastKnownPlayerPosition;
     private bool playerDetected = false;
-    private bool isPatrolling = true; // Thêm biến để theo dõi trạng thái tuần tra
+    private bool isPatrolling = true; 
 
-    public float health = 100f; // Thêm biến máu
-    public MoneySystem moneySystem; // Thêm tham chiếu đến hệ thống tiền tệ
-    public GameManager gameManager; // Thêm tham chiếu đến GameManager
+    public float health = 100f; 
+    public MoneySystem moneySystem; 
+    public GameManager gameManager; 
     private int minDamage = 10;
     private int maxDamage = 20;
 
@@ -31,7 +31,7 @@ public class Enemy : MonoBehaviour
     {
         agent = GetComponent<NavMeshAgent>();
         animator = GetComponent<Animator>();
-        StartCoroutine(PatrolCoroutine()); // Bắt đầu tuần tra khi khởi tạo
+        StartCoroutine(PatrolCoroutine()); 
     }
 
     void Update()
@@ -46,7 +46,6 @@ public class Enemy : MonoBehaviour
         }
         else if (isPatrolling)
         {
-            // Tuần tra được xử lý trong coroutine
         }
     }
 
@@ -74,7 +73,7 @@ public class Enemy : MonoBehaviour
                     {
                         playerDetected = true;
                         lastKnownPlayerPosition = player.position;
-                        isPatrolling = false; // Dừng tuần tra khi phát hiện người chơi
+                        isPatrolling = false; 
                         return;
                     }
                 }
@@ -102,7 +101,7 @@ public class Enemy : MonoBehaviour
         else
         {
             playerDetected = false;
-            isPatrolling = true; // Bắt đầu lại tuần tra khi mất dấu người chơi
+            isPatrolling = true;
             StartCoroutine(PatrolCoroutine());
         }
     }
@@ -123,7 +122,6 @@ public class Enemy : MonoBehaviour
                 animator.SetBool("IsWalking", true);
             }
 
-            // Thêm kiểm tra ở đây
             yield return new WaitUntil(() => agent != null && agent.isActiveAndEnabled && !agent.pathPending && agent.remainingDistance <= agent.stoppingDistance);
 
             if (animator != null)
@@ -146,7 +144,6 @@ public class Enemy : MonoBehaviour
                 animator.SetBool("IsWalking", false);
             }
 
-            // Gây sát thương cho người chơi (giả sử bạn có script PlayerHealth)
             if (player != null)
             {
                 HealthSystem playerHealth = player.GetComponent<HealthSystem>();
@@ -154,7 +151,7 @@ public class Enemy : MonoBehaviour
                 {
                     int damageToDeal = Random.Range(minDamage, maxDamage + 1);
                     Debug.Log("Kẻ địch gây " + damageToDeal + " sát thương.");
-                    playerHealth.TakeDamage(damageToDeal); // Gọi hàm TakeDamage
+                    playerHealth.TakeDamage(damageToDeal); 
                 }
                 else
                 {
@@ -163,14 +160,13 @@ public class Enemy : MonoBehaviour
             }
 
             nextAttackTime = Time.time + attackCooldown;
-            // Đặt lại trigger animation tấn công sau khi nó chạy (bạn có thể cần điều chỉnh thời gian chờ tùy thuộc vào thiết lập animation của bạn)
             StartCoroutine(ResetAttackAnimation());
         }
     }
 
     IEnumerator ResetAttackAnimation()
     {
-        yield return new WaitForSeconds(0.5f); // Điều chỉnh độ trễ này nếu cần
+        yield return new WaitForSeconds(0.5f); 
         if (animator != null)
         {
             animator.SetBool("IsAttacking", false);
@@ -194,10 +190,8 @@ public class Enemy : MonoBehaviour
     void Die()
     {
         Debug.Log("Kẻ địch đã chết!");
-        // Thêm logic chết ở đây (ví dụ: animation, hiệu ứng, phá hủy GameObject)
         Destroy(gameObject);
 
-        // Thêm tiền cho người chơi khi kẻ địch chết
         if (moneySystem != null)
         {
             moneySystem.playerMoney += 50;
