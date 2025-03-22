@@ -103,7 +103,7 @@ public abstract class Gun : MonoBehaviour
     public IEnumerator Reload()
     {
         isReloading = true;
-        Debug.Log(gunData.gunName + " is Reloading...");
+        Debug.Log(gunData.gunName + " đang nạp đạn...");
         reloadAnim.SetBool(reloadHash, true);
         yield return new WaitForSeconds(gunData.reloadTime);
 
@@ -113,7 +113,7 @@ public abstract class Gun : MonoBehaviour
         totalAmmo -= bulletsCanReload;
 
         isReloading = false;
-        Debug.Log(gunData.gunName + " is Reloaded");
+        Debug.Log(gunData.gunName + " đã nạp");
         reloadAnim.SetBool(reloadHash, false);
         UpdateAmmoUI();
     }
@@ -122,12 +122,12 @@ public abstract class Gun : MonoBehaviour
     {
         if (isReloading)
         {
-            Debug.Log(gunData.gunName + " is Reloading...");
+            Debug.Log(gunData.gunName + " đang nạp đạn...");
             return;
         }
         if (currentAmmo <= 0f)
         {
-            Debug.Log(gunData.gunName + " has no bullets left, Please reload");
+            Debug.Log(gunData.gunName + " hết đạn, hãy nạp đạn");
             TryReload(); 
             return;
         }
@@ -140,7 +140,6 @@ public abstract class Gun : MonoBehaviour
     private void HandleShoot()
     {
         currentAmmo--;
-        Debug.Log(gunData.gunName + " Shoot, bullets in magazine: " + currentAmmo + ", total bullets: " + totalAmmo);
         ApplyRecoil();
         if (muzzleFlash != null)
         {
@@ -195,12 +194,9 @@ public abstract class Gun : MonoBehaviour
     {
         if (bulletHolePrefab != null)
         {
-            Debug.Log("Bullet hole created at: " + hit.point);
-            Debug.Log("Hit object: " + hit.collider.gameObject.name);
             GameObject bulletHole = Instantiate(bulletHolePrefab, hit.point + hit.normal * 0.01f, Quaternion.LookRotation(hit.normal));
             bulletHole.transform.parent = hit.collider.transform;
             Destroy(bulletHole, 3f);
-            Debug.Log("Bullet hole created!");
         }
     }
 

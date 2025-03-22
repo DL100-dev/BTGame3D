@@ -94,13 +94,13 @@ public class GunShopManager : MonoBehaviour
         if (moneySystem.TryBuyWeapon(pistolPrice))
         {
             moneySystem.UpdateMoneyUI();
-            Debug.Log("Pistol purchased!");
+            Debug.Log("đã mua Pistol");
             SelectGun(pistolGameObject);
             UpdateShopButtons();
         }
         else
         {
-            Debug.Log("Not enough money to purchase Pistol.");
+            Debug.Log("Không đủ tiền để mua Pistol.");
         }
     }
 
@@ -109,13 +109,13 @@ public class GunShopManager : MonoBehaviour
         if (moneySystem.TryBuyWeapon(riflePrice))
         {
             moneySystem.UpdateMoneyUI();
-            Debug.Log("Rifle purchased!");
+            Debug.Log("đã mua Rifle");
             SelectGun(rifleGameObject);
             UpdateShopButtons();
         }
         else
         {
-            Debug.Log("Not enough money to purchase Rifle.");
+            Debug.Log("Không đủ tiền để mua Rifle.");
         }
     }
 
@@ -124,13 +124,13 @@ public class GunShopManager : MonoBehaviour
         if (moneySystem.TryBuyWeapon(sniperPrice))
         {
             moneySystem.UpdateMoneyUI();
-            Debug.Log("Sniper purchased!");
+            Debug.Log("đã mua Sniper");
             SelectGun(sniperGameObject);
             UpdateShopButtons();
         }
         else
         {
-            Debug.Log("Not enough money to purchase Sniper.");
+            Debug.Log("Không đủ tiền để mua sniper");
         }
     }
 
@@ -146,13 +146,13 @@ public class GunShopManager : MonoBehaviour
                 gunScript.UpdateAmmoUI();
                 moneySystem.playerMoney -= reloadPrice;
                 moneySystem.UpdateMoneyUI();
-                Debug.Log("Ammo reloaded!");
+                Debug.Log("Đạn đã nạp đạn");
                 UpdateShopButtons();
             }
         }
         else
         {
-            Debug.Log("Not enough money to reload ammo or no weapon selected.");
+            Debug.Log("Không đủ tiền");
         }
     }
 
@@ -196,7 +196,7 @@ public class GunShopManager : MonoBehaviour
         }
         else
         {
-            Debug.Log("No weapon selected!");
+            Debug.Log("chưa sở hữu vũ khí");
         }
     }
 
